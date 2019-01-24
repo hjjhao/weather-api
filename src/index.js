@@ -2,9 +2,9 @@ const express = require('express');
 const router = require('./router');
 const helmet = require('helmet');
 const app = express();
-const helmet = require('helmet');
 const morgan = require('morgan');
 const notFound = require('./middleware/notFound');
+const logger = require('./utiles/logger');
 
 app.use(helmet());
 app.use(morgan('dev'));
@@ -13,6 +13,6 @@ app.use(notFound);
 
 
 const port = process.env.PORT || 3000;
-app.listen(port, ()=>console.log(`app listening at port ${port}`));
+app.listen(port, () => logger.info(`app listening at port ${port}`));
 
 
