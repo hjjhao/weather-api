@@ -6,6 +6,7 @@ const instance = axios.create({
     params: {
         APPID: process.env.APPID,
         city: 'test',
+        units: 'metric'
     }
 });
 
