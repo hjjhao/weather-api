@@ -5,7 +5,7 @@ const instance = axios.create({
     headers: { 'X-Custom-Header': 'foobar' },
     params: {
         APPID: process.env.APPID,
-        city: 'test',
+        // city: 'test',
         units: 'metric'
     }
 });

@@ -3,36 +3,35 @@ const CurrentWeather = require('./Current');
 const City = require('./City');
 const axios = require('../utiles/axios');
 
-class Weather{
-    constructor(){
+class Weather {
+    constructor() {
     }
-    getData(city,country,weatherType){
-        const currentWeather = getWeatherData(city,country)[0].data;
-        const forecastWeather = getWeatherData(city,country)[1].data ;
-        const weather = {
-            city: new City(forecastWeather.city),
-            current : new CurrentWeather(currentWeather),
-            forecast: getWeatherData(city,country)[1].list.map(i=>new ForecastWeather(i)),
-        };
-        return weather;
+    getData(city, country, weatherType) {
+        // const currentWeather = getWeatherData(city,country)[0];
+        // const forecastWeather = getWeatherData(city,country)[1];
+        return Promise.all(getWeatherData(city, country))
+            .then(response => {
+                console.log(response[0].data)
+                const weather = {
+                    city: new City(response[1].data.city),
+                    current: new CurrentWeather(response[0].data),
+                    forecast: response[1].data.list.map(i => new ForecastWeather(i)),
+                };
+                weatherType ==='current'? delete weather.forecast 
+                :weatherType ==='forecast'? delete weather.current:console.log(`WeatherType : ${weatherType}`);
+                console.log(weather);
+                return weather;
+
+            })
+            .catch(err => console.log(err))
+
     }
 }
 
-function getWeatherData(city,country){
-    const weatherType = ['/weather','/forecast'];
-
-    const weather = weatherType.map(i=>axios.get(`${i}?q=${city},${country}`)
-    .then(function (response) {
-        console.log(response);
-        // res.send(response.data);
-    })
-    .catch(function (error) {
-        console.log(error);
-    }));
-   
-
-    return weather;
+function getWeatherData(city, country) {
+    const weatherType = ['/weather', '/forecast'];
+    return weatherType.map(i => axios.get(`${i}?q=${city},${country}`));
 }
 
 
-module.exports = Weather;
+module.exports = new Weather();
