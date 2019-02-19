@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const rootHandler = require('./middleware/roothander');
+const rootHandler = require('./middleware/rootHander');
 const weatherRouter = require('./routes/weatherRouter');
 console.log('router.js');
 router.get('/', (req,res)=>res.send('welcomepage'));
