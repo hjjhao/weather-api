@@ -3,6 +3,7 @@ const CurrentWeather = require('./Current');
 const City = require('./City');
 const axios = require('../utiles/axios');
 
+
 class Weather {
     constructor() {
     }
@@ -11,15 +12,16 @@ class Weather {
         // const forecastWeather = getWeatherData(city,country)[1];
         return Promise.all(getWeatherData(city, country))
             .then(response => {
-                console.log(response[0].data)
+                // console.log(response[0].data)
                 const weather = {
                     city: new City(response[1].data.city),
                     current: new CurrentWeather(response[0].data),
                     forecast: response[1].data.list.map(i => new ForecastWeather(i)),
                 };
+                // console.log(weather.city.test);
                 weatherType ==='current'? delete weather.forecast 
                 :weatherType ==='forecast'? delete weather.current:console.log(`WeatherType : ${weatherType}`);
-                console.log(weather);
+                // console.log(weather);
                 return weather;
 
             })
@@ -30,6 +32,7 @@ class Weather {
 
 function getWeatherData(city, country) {
     const weatherType = ['/weather', '/forecast'];
+    // const weatehr = [];
     return weatherType.map(i => axios.get(`${i}?q=${city},${country}`));
 }
 
